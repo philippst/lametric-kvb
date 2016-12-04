@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,18 +42,18 @@ public class KvbStationDomExtractorTest {
     public void getDisruptionMessageSingle() throws Exception {
         Document dom = Jsoup.parse(getResourceFile("station-departures-disruption.html"),"utf-8");
         List<String> stationDisruptionMessage = KvbStationDomExtractor.getDisruptionMessage(dom);
-        assertEquals(1,stationDisruptionMessage.size());
-        String assertMessage = "Linie 18 * Folgende Fahrt entfällt * (H) Klettenbergpark 14:09h *";
-        assertEquals(assertMessage,stationDisruptionMessage.get(0));
+        List<String> actual = Arrays.asList("Linie 18 * Folgende Fahrt entfällt * (H) Klettenbergpark 14:09h *");
+        assertEquals(actual,stationDisruptionMessage);
     }
 
     @Test
     public void getDisruptionMessageSeveral() throws Exception {
         Document dom = Jsoup.parse(getResourceFile("station-departures-disruptions.html"),"utf-8");
         List<String> stationDisruptionMessage = KvbStationDomExtractor.getDisruptionMessage(dom);
-        assertEquals(2,stationDisruptionMessage.size());
-        String assertMessage = "Linie 18 * Folgende Fahrt entfällt * (H) Thielenbruch 15:08h *";
-        assertEquals(assertMessage,stationDisruptionMessage.get(1));
+        List<String> actual = Arrays.asList(
+                "Linie 3 * Folgende Fahrt entfällt * (H) Thielenbruch 19:06h *",
+                "Linie 18 * Folgende Fahrt entfällt * (H) Thielenbruch 15:08h *");
+        assertEquals(actual,stationDisruptionMessage);
     }
 
     @Test
