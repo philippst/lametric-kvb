@@ -2,9 +2,10 @@ package com.lametric.kvb;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.lametric.utils.LametricAppFrame;
+import com.lametric.kvb.exception.KvbAppConfigurationException;
 import com.lametric.kvb.exception.KvbAppException;
-import com.lametric.utils.LametricApp;
+import com.lametric.kvb.utils.LametricApp;
+import com.lametric.kvb.utils.LametricAppFrame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ public class KvbAppEndpoint {
 
     public KvbAppEndpoint(){}
 
-    public LametricApp getResponse(KvbAppRequest kvbAppRequest) throws IOException {
+    public LametricApp getResponse(KvbAppRequest kvbAppRequest) throws IOException, KvbAppConfigurationException {
+        validateRequest(kvbAppRequest);
+
         LametricApp lametricApp = new LametricApp();
 
         try {
@@ -120,6 +123,12 @@ public class KvbAppEndpoint {
         frame.setText(errorText);
         frame.setIcon("i93");
         return frame;
+    }
+
+    private void validateRequest(KvbAppRequest kvbAppRequest) throws KvbAppConfigurationException {
+        if(kvbAppRequest.getStationId() == null) throw new KvbAppConfigurationException("missing stationId");
+        if(kvbAppRequest.getFrames() == null || kvbAppRequest.getFrames().length == 0)
+            throw new KvbAppConfigurationException("missing frames");
     }
 
 }

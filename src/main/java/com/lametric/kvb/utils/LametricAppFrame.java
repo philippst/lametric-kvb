@@ -1,4 +1,4 @@
-package com.lametric.utils;
+package com.lametric.kvb.utils;
 
 public class LametricAppFrame {
 

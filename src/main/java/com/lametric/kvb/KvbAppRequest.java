@@ -1,7 +1,11 @@
 package com.lametric.kvb;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Ints;
+
+import java.util.Map;
 
 public class KvbAppRequest {
 
@@ -20,15 +24,30 @@ public class KvbAppRequest {
     // Ignoriere Bahnen mit diesem Fahrtziel
     private String[] filteredDestinations;
 
+    // Darzustellende Ansichten
     private String[] frames;
 
-    public KvbAppRequest(){
-        this.stationId = 255;
-        this.minTime = 4;
-        this.maxTime = 90;
-        this.limit = 5;
-        this.frames = new String[]{"disruption", "allDepartures", "singleDeparture"};
-        this.filteredDestinations = new String[]{"Bocklemünd", "Mengenich", "Bickendorf"};
+    public KvbAppRequest(){}
+
+    public KvbAppRequest(Map<String, String> queryStringParams){
+        if(queryStringParams.get("stationId") != null){
+            setStationId(Ints.tryParse(queryStringParams.get("stationId")));
+        }
+
+        if(queryStringParams.get("minTime") != null){
+            setMinTime(Ints.tryParse(queryStringParams.get("minTime")));
+        }
+
+        if(queryStringParams.get("maxTime") != null){
+            setMaxTime(Ints.tryParse(queryStringParams.get("maxTime")));
+        }
+
+        if(queryStringParams.get("limit") != null){
+            setLimit(Ints.tryParse(queryStringParams.get("limit")));
+        }
+
+        setFrames(queryStringParams.get("frames"));
+        setFilteredDestinations(queryStringParams.get("filteredDestinations"));
     }
 
     public Integer getStationId() {
@@ -72,6 +91,7 @@ public class KvbAppRequest {
     }
 
     public void setFilteredDestinations(String filteredDestinations) {
+        if(filteredDestinations == null) return;
         Iterable<String> destinations = Splitter.on(',')
                 .trimResults()
                 .omitEmptyStrings()
@@ -89,5 +109,15 @@ public class KvbAppRequest {
                 .omitEmptyStrings()
                 .split(frames);
         this.frames = Iterables.toArray(frame,String.class);
+    }
+
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("stationId", stationId)
+                .add("frames", frames)
+                .add("minTime", minTime)
+                .add("maxTime", maxTime)
+                .add("filteredDestinations",filteredDestinations)
+                .toString();
     }
 }
