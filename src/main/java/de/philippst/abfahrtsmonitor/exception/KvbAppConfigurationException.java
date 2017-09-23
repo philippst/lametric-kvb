@@ -1,4 +1,4 @@
-package com.lametric.kvb.exception;
+package de.philippst.abfahrtsmonitor.exception;
 
 public class KvbAppConfigurationException extends KvbAppException{
     public KvbAppConfigurationException() { super(); }

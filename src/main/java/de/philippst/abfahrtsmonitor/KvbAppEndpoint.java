@@ -1,12 +1,15 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.lametric.kvb.exception.KvbAppConfigurationException;
-import com.lametric.kvb.exception.KvbAppException;
-import com.lametric.kvb.utils.LametricApp;
-import com.lametric.kvb.utils.LametricAppFrame;
-import com.lametric.kvb.utils.LametricAppFrameName;
+import de.philippst.abfahrtsmonitor.exception.KvbAppConfigurationException;
+import de.philippst.abfahrtsmonitor.exception.KvbAppException;
+import com.lametric.IndicatorApp;
+import com.lametric.frame.FrameAbstract;
+import com.lametric.frame.FrameText;
+import de.philippst.abfahrtsmonitor.model.KvbStation;
+import de.philippst.abfahrtsmonitor.model.KvbStationDeparture;
+import de.philippst.abfahrtsmonitor.utils.StationDataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,13 +25,13 @@ public class KvbAppEndpoint {
 
     public KvbAppEndpoint(){}
 
-    public LametricApp getResponse(KvbAppRequest kvbAppRequest) throws IOException, KvbAppConfigurationException {
+    public IndicatorApp getResponse(KvbAppRequest kvbAppRequest) throws IOException, KvbAppConfigurationException {
         validateRequest(kvbAppRequest);
 
-        LametricApp lametricApp = new LametricApp();
+        IndicatorApp lametricApp = new IndicatorApp();
 
         try {
-            kvbStation = KvbLoadStationData.loadData(kvbAppRequest.getStationId());
+            kvbStation = StationDataLoader.loadData(kvbAppRequest.getStationId());
         } catch (KvbAppException e) {
             lametricApp.addFrame(errorFrame(e.getMessage()));
             return lametricApp;
@@ -52,34 +55,34 @@ public class KvbAppEndpoint {
         return lametricApp;
     }
 
-    public LametricAppFrame getKvbDisruptionFrame(String disruptionMessage){
-        return new LametricAppFrameName(disruptionMessage,"a4369");
+    public FrameAbstract getKvbDisruptionFrame(String disruptionMessage){
+        return new FrameText(disruptionMessage,"a4369");
     }
 
-    public LametricAppFrame getKvbNextDepartureFrame(KvbAppRequest kvbAppRequest){
+    public FrameAbstract getKvbNextDepartureFrame(KvbAppRequest kvbAppRequest){
         KvbStation filteredStationData = departureFilter(kvbStation,kvbAppRequest.getMinTime(),kvbAppRequest.getMaxTime(),
                 kvbAppRequest.getLimit(),kvbAppRequest.getFilteredDestinations());
 
         if(filteredStationData.getDepartures().size() > 0){
             KvbStationDeparture nextDeparture = filteredStationData.getDepartures().get(0);
 
-            LametricAppFrameName lametricAppFrame = new LametricAppFrameName();
+            FrameText lametricAppFrame = new FrameText();
             lametricAppFrame.setIcon("i2451");
             lametricAppFrame.setText(Strings.padStart(nextDeparture.getMinutes().toString(), 2, ' ')+" min");
             return lametricAppFrame;
         } else {
-            LametricAppFrameName lametricAppFrame = new LametricAppFrameName();
+            FrameText lametricAppFrame = new FrameText();
             lametricAppFrame.setIcon("i2451");
             lametricAppFrame.setText("");
             return lametricAppFrame;
         }
     }
 
-    public LametricAppFrame getKvbDepartureFrame(KvbAppRequest kvbAppRequest){
+    public FrameAbstract getKvbDepartureFrame(KvbAppRequest kvbAppRequest){
         KvbStation filteredStationData = departureFilter(kvbStation,kvbAppRequest.getMinTime(),kvbAppRequest.getMaxTime(),
                 kvbAppRequest.getLimit(),kvbAppRequest.getFilteredDestinations());
 
-        LametricAppFrameName kvbDepartureFrame = new LametricAppFrameName();
+        FrameText kvbDepartureFrame = new FrameText();
         kvbDepartureFrame.setIcon("a1395");
 
         String responseText = "";
@@ -121,8 +124,8 @@ public class KvbAppEndpoint {
         return filteredStation;
     }
 
-    private LametricAppFrame errorFrame(String errorText){
-        LametricAppFrameName frame = new LametricAppFrameName();
+    private FrameAbstract errorFrame(String errorText){
+        FrameText frame = new FrameText();
         frame.setText(errorText);
         frame.setIcon("i93");
         return frame;

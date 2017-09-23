@@ -1,16 +1,15 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor.handler;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.lametric.kvb.aws.AwsRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Application{
+public class ApplicationRequestHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(Application.class);
+    private static Logger logger = LoggerFactory.getLogger(ApplicationRequestHandler.class);
 
     public static void main(String[] args){
         AwsRequestHandler awsAwsRequestHandler = new AwsRequestHandler();

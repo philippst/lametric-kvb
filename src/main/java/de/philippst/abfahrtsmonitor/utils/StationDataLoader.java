@@ -1,7 +1,8 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor.utils;
 
 import com.google.common.base.Stopwatch;
-import com.lametric.kvb.exception.KvbAppException;
+import de.philippst.abfahrtsmonitor.exception.KvbAppException;
+import de.philippst.abfahrtsmonitor.model.KvbStation;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class KvbLoadStationData {
+public class StationDataLoader {
 
-    private static Logger logger = LoggerFactory.getLogger(KvbLoadStationData.class);
+    private static Logger logger = LoggerFactory.getLogger(StationDataLoader.class);
 
     public static KvbStation loadData(int stationId) throws KvbAppException, IOException {
         if(stationId == 0) throw new KvbAppException("Invalid kvb station id");
@@ -49,9 +50,9 @@ public class KvbLoadStationData {
    //         throw new KvbAppException("Störung der Fahrgastinformation");
    //     }
 
-        kvbStation.setTitle(KvbStationDomExtractor.getStationTitle(dom));
-        kvbStation.setDisruptionMessage(KvbStationDomExtractor.getDisruptionMessage(dom));
-        kvbStation.setDepartures(KvbStationDomExtractor.getDepartures(dom));
+        kvbStation.setTitle(StationDomExtractor.getStationTitle(dom));
+        kvbStation.setDisruptionMessage(StationDomExtractor.getDisruptionMessage(dom));
+        kvbStation.setDepartures(StationDomExtractor.getDepartures(dom));
 
         return kvbStation;
     }

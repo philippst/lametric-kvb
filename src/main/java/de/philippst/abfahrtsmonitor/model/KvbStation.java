@@ -1,4 +1,4 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor.model;
 
 import java.util.List;
 

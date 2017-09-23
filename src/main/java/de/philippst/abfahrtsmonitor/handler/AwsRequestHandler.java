@@ -1,15 +1,15 @@
-package com.lametric.kvb.aws;
+package de.philippst.abfahrtsmonitor.handler;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
-import com.lametric.kvb.KvbAppEndpoint;
-import com.lametric.kvb.KvbAppRequest;
-import com.lametric.kvb.exception.KvbAppConfigurationException;
-import com.lametric.kvb.utils.LametricApp;
-import com.lametric.kvb.utils.LametricAppFrameName;
+import com.lametric.IndicatorApp;
+import de.philippst.abfahrtsmonitor.KvbAppEndpoint;
+import de.philippst.abfahrtsmonitor.KvbAppRequest;
+import de.philippst.abfahrtsmonitor.exception.KvbAppConfigurationException;
+import com.lametric.frame.FrameText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestE
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent request, Context context) {
-        LametricApp lametricApp = new LametricApp();
+        IndicatorApp lametricApp = new IndicatorApp();
         logger.debug("GatewayRequest: {}",request);
 
         KvbAppRequest kvbAppRequest = new KvbAppRequest(request.getQueryStringParameters());
@@ -31,14 +31,14 @@ public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestE
         KvbAppEndpoint kvbEndpoint = new KvbAppEndpoint();
         try {
             lametricApp = kvbEndpoint.getResponse(kvbAppRequest);
-            logger.info("LametricApp Response: {}",lametricApp);
+            logger.info("IndicatorApp Response: {}",lametricApp);
         } catch (IOException e) {
             logger.error("unkown error",e);
             statuscode = 400;
         } catch (KvbAppConfigurationException e) {
             logger.warn("user configuration error",e);
             statuscode = 400;
-            lametricApp.addFrame(new LametricAppFrameName(e.getMessage()));
+            lametricApp.addFrame(new FrameText(e.getMessage()));
         }
 
         Gson gson = new Gson();

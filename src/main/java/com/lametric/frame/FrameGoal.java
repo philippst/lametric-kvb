@@ -1,8 +1,8 @@
-package com.lametric.kvb.utils;
+package com.lametric.frame;
 
-public class LametricAppFrameGoal extends LametricAppFrame{
+public class FrameGoal extends FrameAbstract {
 
-    public LametricAppFrameGoal(){
+    public FrameGoal(){
         goalData = new GoalData();
     }
 

@@ -1,4 +1,4 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;

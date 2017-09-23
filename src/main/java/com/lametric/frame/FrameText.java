@@ -1,15 +1,15 @@
-package com.lametric.kvb.utils;
+package com.lametric.frame;
 
-public class LametricAppFrameName extends LametricAppFrame{
+public class FrameText extends FrameAbstract {
 
-    public LametricAppFrameName(){
+    public FrameText(){
     }
 
-    public LametricAppFrameName(String text){
+    public FrameText(String text){
         this.text = text;
     }
 
-    public LametricAppFrameName(String text, String icon){
+    public FrameText(String text, String icon){
         this.text = text;
         this.icon = icon;
     }

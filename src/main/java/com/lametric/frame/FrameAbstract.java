@@ -1,6 +1,6 @@
-package com.lametric.kvb.utils;
+package com.lametric.frame;
 
-public abstract class LametricAppFrame {
+public abstract class FrameAbstract {
 
     public String icon;
 

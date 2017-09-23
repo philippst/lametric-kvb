@@ -1,4 +1,4 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor.model;
 
 public class KvbStationDeparture {
     public String line;

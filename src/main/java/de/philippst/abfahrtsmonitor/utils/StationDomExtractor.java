@@ -1,6 +1,7 @@
-package com.lametric.kvb;
+package de.philippst.abfahrtsmonitor.utils;
 
-import com.lametric.kvb.exception.KvbAppException;
+import de.philippst.abfahrtsmonitor.model.KvbStationDeparture;
+import de.philippst.abfahrtsmonitor.exception.KvbAppException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -8,7 +9,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KvbStationDomExtractor {
+public class StationDomExtractor {
 
     /**
      * Suche Namen der Haltestelle in DOM
