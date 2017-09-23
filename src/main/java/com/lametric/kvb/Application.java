@@ -1,7 +1,7 @@
 package com.lametric.kvb;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.lametric.kvb.aws.AwsRequestHandler;
-import com.lametric.kvb.aws.GatewayRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class Application{
         queryStringParam.put("limit","5");
         queryStringParam.put("frames","disruption, allDepartures, singleDeparture");
 
-        GatewayRequest gatewayRequest = new GatewayRequest();
+        APIGatewayProxyRequestEvent gatewayRequest = new APIGatewayProxyRequestEvent();
         gatewayRequest.setQueryStringParameters(queryStringParam);
 
         awsAwsRequestHandler.handleRequest(gatewayRequest, null);

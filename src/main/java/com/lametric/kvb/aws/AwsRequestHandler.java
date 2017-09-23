@@ -2,6 +2,8 @@ package com.lametric.kvb.aws;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
 import com.lametric.kvb.KvbAppEndpoint;
 import com.lametric.kvb.KvbAppRequest;
@@ -13,12 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class AwsRequestHandler implements RequestHandler<GatewayRequest,GatewayResponse> {
+public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent,APIGatewayProxyResponseEvent> {
 
     private static Logger logger = LoggerFactory.getLogger(AwsRequestHandler.class);
 
     @Override
-    public GatewayResponse handleRequest(GatewayRequest request, Context context) {
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent request, Context context) {
         LametricApp lametricApp = new LametricApp();
         logger.debug("GatewayRequest: {}",request);
 
@@ -42,9 +44,10 @@ public class AwsRequestHandler implements RequestHandler<GatewayRequest,GatewayR
         Gson gson = new Gson();
         String responseBody = gson.toJson(lametricApp);
 
-        GatewayResponse gatewayResponse = new GatewayResponse(
-                responseBody,null,statuscode,false);
-        logger.info("GatewayResponse: {}",gatewayResponse);
-        return gatewayResponse;
+        APIGatewayProxyResponseEvent gatewayProxyResponseEvent = new APIGatewayProxyResponseEvent().withBody
+                (responseBody).withStatusCode(statuscode);
+
+        logger.info("GatewayProxyResponseEvent: {}",gatewayProxyResponseEvent);
+        return gatewayProxyResponseEvent;
     }
 }
