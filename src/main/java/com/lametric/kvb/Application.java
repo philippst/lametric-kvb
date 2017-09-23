@@ -2,14 +2,15 @@ package com.lametric.kvb;
 
 import com.lametric.kvb.aws.AwsRequestHandler;
 import com.lametric.kvb.aws.GatewayRequest;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Application{
 
-    private static final Logger logger = Logger.getLogger(Application.class);
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args){
         AwsRequestHandler awsAwsRequestHandler = new AwsRequestHandler();

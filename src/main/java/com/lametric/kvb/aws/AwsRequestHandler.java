@@ -7,32 +7,36 @@ import com.lametric.kvb.KvbAppEndpoint;
 import com.lametric.kvb.KvbAppRequest;
 import com.lametric.kvb.exception.KvbAppConfigurationException;
 import com.lametric.kvb.utils.LametricApp;
-import org.apache.log4j.Logger;
+import com.lametric.kvb.utils.LametricAppFrameName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class AwsRequestHandler implements RequestHandler<GatewayRequest,GatewayResponse> {
 
-    private static final Logger logger = Logger.getLogger(AwsRequestHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(AwsRequestHandler.class);
 
     @Override
     public GatewayResponse handleRequest(GatewayRequest request, Context context) {
-        LametricApp lametricApp = null;
-        logger.debug(request);
+        LametricApp lametricApp = new LametricApp();
+        logger.debug("GatewayRequest: {}",request);
 
         KvbAppRequest kvbAppRequest = new KvbAppRequest(request.getQueryStringParameters());
-        logger.info(kvbAppRequest);
+        logger.info("KvbAppRequest: {}",kvbAppRequest);
 
         Integer statuscode = 200;
         KvbAppEndpoint kvbEndpoint = new KvbAppEndpoint();
         try {
             lametricApp = kvbEndpoint.getResponse(kvbAppRequest);
+            logger.info("LametricApp Response: {}",lametricApp);
         } catch (IOException e) {
-            logger.error(e);
+            logger.error("unkown error",e);
             statuscode = 400;
         } catch (KvbAppConfigurationException e) {
-            logger.warn(e);
+            logger.warn("user configuration error",e);
             statuscode = 400;
+            lametricApp.addFrame(new LametricAppFrameName(e.getMessage()));
         }
 
         Gson gson = new Gson();
@@ -40,7 +44,7 @@ public class AwsRequestHandler implements RequestHandler<GatewayRequest,GatewayR
 
         GatewayResponse gatewayResponse = new GatewayResponse(
                 responseBody,null,statuscode,false);
-        logger.info(gatewayResponse);
+        logger.info("GatewayResponse: {}",gatewayResponse);
         return gatewayResponse;
     }
 }

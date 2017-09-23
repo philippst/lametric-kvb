@@ -46,8 +46,12 @@ public class KvbAppRequest {
             setLimit(Ints.tryParse(queryStringParams.get("limit")));
         }
 
-        setFrames(queryStringParams.get("frames"));
-        setFilteredDestinations(queryStringParams.get("filteredDestinations"));
+        if(queryStringParams.get("frames") != null){
+            setFrames(queryStringParams.get("frames"));
+        }
+        if(queryStringParams.get("filteredDestinations") != null){
+            setFilteredDestinations(queryStringParams.get("filteredDestinations"));
+        }
     }
 
     public Integer getStationId() {

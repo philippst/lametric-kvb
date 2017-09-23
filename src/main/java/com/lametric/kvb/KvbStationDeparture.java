@@ -27,7 +27,6 @@ public class KvbStationDeparture {
         return "Linie "+this.line+" nach "+this.destination+" in "+this.minutes+" min";
     }
 
-
     public String toString(){
         return this.minutes+"min";
     }

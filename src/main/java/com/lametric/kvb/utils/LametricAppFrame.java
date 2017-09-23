@@ -1,17 +1,8 @@
 package com.lametric.kvb.utils;
 
-public class LametricAppFrame {
+public abstract class LametricAppFrame {
 
-    public String text;
     public String icon;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public String getIcon() {
         return icon;

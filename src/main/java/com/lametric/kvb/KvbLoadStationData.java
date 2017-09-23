@@ -8,16 +8,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class KvbLoadStationData {
 
-    private static final Logger logger = Logger.getLogger(KvbLoadStationData.class);
+    private static Logger logger = LoggerFactory.getLogger(KvbLoadStationData.class);
 
     public static KvbStation loadData(int stationId) throws KvbAppException, IOException {
         if(stationId == 0) throw new KvbAppException("Invalid kvb station id");

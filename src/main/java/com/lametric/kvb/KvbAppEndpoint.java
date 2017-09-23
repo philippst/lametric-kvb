@@ -6,6 +6,9 @@ import com.lametric.kvb.exception.KvbAppConfigurationException;
 import com.lametric.kvb.exception.KvbAppException;
 import com.lametric.kvb.utils.LametricApp;
 import com.lametric.kvb.utils.LametricAppFrame;
+import com.lametric.kvb.utils.LametricAppFrameName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KvbAppEndpoint {
+    private static Logger logger = LoggerFactory.getLogger(KvbAppEndpoint.class);
 
     private KvbStation kvbStation;
 
@@ -45,38 +49,37 @@ public class KvbAppEndpoint {
         if(frames.contains("singleDeparture")){
             lametricApp.addFrame(getKvbNextDepartureFrame(kvbAppRequest));
         }
-
         return lametricApp;
     }
 
     public LametricAppFrame getKvbDisruptionFrame(String disruptionMessage){
-        LametricAppFrame lametricAppFrame = new LametricAppFrame();
-        lametricAppFrame.setIcon("a4369");
-        lametricAppFrame.setText(disruptionMessage);
-        return lametricAppFrame;
+        return new LametricAppFrameName(disruptionMessage,"a4369");
     }
 
     public LametricAppFrame getKvbNextDepartureFrame(KvbAppRequest kvbAppRequest){
         KvbStation filteredStationData = departureFilter(kvbStation,kvbAppRequest.getMinTime(),kvbAppRequest.getMaxTime(),
                 kvbAppRequest.getLimit(),kvbAppRequest.getFilteredDestinations());
 
-        LametricAppFrame lametricAppFrame = new LametricAppFrame();
-        lametricAppFrame.setIcon("i2451");
-
         if(filteredStationData.getDepartures().size() > 0){
             KvbStationDeparture nextDeparture = filteredStationData.getDepartures().get(0);
+
+            LametricAppFrameName lametricAppFrame = new LametricAppFrameName();
+            lametricAppFrame.setIcon("i2451");
             lametricAppFrame.setText(Strings.padStart(nextDeparture.getMinutes().toString(), 2, ' ')+" min");
+            return lametricAppFrame;
         } else {
+            LametricAppFrameName lametricAppFrame = new LametricAppFrameName();
+            lametricAppFrame.setIcon("i2451");
             lametricAppFrame.setText("");
+            return lametricAppFrame;
         }
-        return lametricAppFrame;
     }
 
     public LametricAppFrame getKvbDepartureFrame(KvbAppRequest kvbAppRequest){
         KvbStation filteredStationData = departureFilter(kvbStation,kvbAppRequest.getMinTime(),kvbAppRequest.getMaxTime(),
                 kvbAppRequest.getLimit(),kvbAppRequest.getFilteredDestinations());
 
-        LametricAppFrame kvbDepartureFrame = new LametricAppFrame();
+        LametricAppFrameName kvbDepartureFrame = new LametricAppFrameName();
         kvbDepartureFrame.setIcon("a1395");
 
         String responseText = "";
@@ -119,16 +122,16 @@ public class KvbAppEndpoint {
     }
 
     private LametricAppFrame errorFrame(String errorText){
-        LametricAppFrame frame = new LametricAppFrame();
+        LametricAppFrameName frame = new LametricAppFrameName();
         frame.setText(errorText);
         frame.setIcon("i93");
         return frame;
     }
 
     private void validateRequest(KvbAppRequest kvbAppRequest) throws KvbAppConfigurationException {
-        if(kvbAppRequest.getStationId() == null) throw new KvbAppConfigurationException("missing stationId");
+        if(kvbAppRequest.getStationId() == null) throw new KvbAppConfigurationException("stationId parameter is missing");
         if(kvbAppRequest.getFrames() == null || kvbAppRequest.getFrames().length == 0)
-            throw new KvbAppConfigurationException("missing frames");
+            throw new KvbAppConfigurationException("frames parameter is missing");
     }
 
 }
