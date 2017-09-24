@@ -37,11 +37,14 @@ public class StationDataLoader {
 
             Document dom = Jsoup.parse(responseString);
 
-            return new KvbStation(StationDomExtractor.getStationTitle(dom),StationDomExtractor
-                    .getDisruptionMessage(dom),StationDomExtractor.getDepartures(dom));
+            return new KvbStation(
+                    StationDomExtractor.getStationTitle(dom),
+                    StationDomExtractor.getDisruptionMessage(dom),
+                    StationDomExtractor.getDepartures(dom)
+            );
 
         } catch (IOException e) {
-            throw new KvbAppException("loading station data from KVB failed.",e);
+            throw new KvbAppException("loading station data from KVB failed",e);
         } catch (URISyntaxException e) {
             throw new KvbAppException("building kvb request uri failed.",e);
         }

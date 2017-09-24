@@ -13,7 +13,6 @@ import de.philippst.abfahrtsmonitor.utils.StationDataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,7 @@ public class KvbAppEndpoint {
 
     public KvbAppEndpoint(){}
 
-    public IndicatorApp getResponse(KvbAppRequest kvbAppRequest) throws IOException, KvbAppConfigurationException {
+    public IndicatorApp getResponse(KvbAppRequest kvbAppRequest) throws KvbAppConfigurationException {
         validateRequest(kvbAppRequest);
 
         IndicatorApp lametricApp = new IndicatorApp();

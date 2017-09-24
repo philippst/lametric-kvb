@@ -1,15 +1,11 @@
 package de.philippst.abfahrtsmonitor.handler;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationRequestHandler {
-
-    private static Logger logger = LoggerFactory.getLogger(ApplicationRequestHandler.class);
 
     public static void main(String[] args){
         AwsRequestHandler awsAwsRequestHandler = new AwsRequestHandler();
@@ -26,6 +22,5 @@ public class ApplicationRequestHandler {
         gatewayRequest.setQueryStringParameters(queryStringParam);
 
         awsAwsRequestHandler.handleRequest(gatewayRequest, null);
-        return;
     }
 }

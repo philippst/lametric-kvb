@@ -13,8 +13,6 @@ import com.lametric.frame.FrameText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent,APIGatewayProxyResponseEvent> {
 
     private static Logger logger = LoggerFactory.getLogger(AwsRequestHandler.class);
@@ -31,11 +29,7 @@ public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestE
         KvbAppEndpoint kvbEndpoint = new KvbAppEndpoint();
         try {
             lametricApp = kvbEndpoint.getResponse(kvbAppRequest);
-        } catch (IOException e) {
-            logger.error("unkown error",e);
-            statuscode = 400;
         } catch (KvbAppConfigurationException e) {
-            logger.warn("user configuration error",e);
             statuscode = 400;
             lametricApp.addFrame(new FrameText(e.getMessage()));
         }
