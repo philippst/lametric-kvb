@@ -31,7 +31,6 @@ public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestE
         KvbAppEndpoint kvbEndpoint = new KvbAppEndpoint();
         try {
             lametricApp = kvbEndpoint.getResponse(kvbAppRequest);
-            logger.info("IndicatorApp Response: {}",lametricApp);
         } catch (IOException e) {
             logger.error("unkown error",e);
             statuscode = 400;
@@ -44,8 +43,9 @@ public class AwsRequestHandler implements RequestHandler<APIGatewayProxyRequestE
         Gson gson = new Gson();
         String responseBody = gson.toJson(lametricApp);
 
-        APIGatewayProxyResponseEvent gatewayProxyResponseEvent = new APIGatewayProxyResponseEvent().withBody
-                (responseBody).withStatusCode(statuscode);
+        APIGatewayProxyResponseEvent gatewayProxyResponseEvent = new APIGatewayProxyResponseEvent()
+                .withBody(responseBody)
+                .withStatusCode(statuscode);
 
         logger.info("GatewayProxyResponseEvent: {}",gatewayProxyResponseEvent);
         return gatewayProxyResponseEvent;

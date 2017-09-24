@@ -33,6 +33,7 @@ public class KvbAppEndpoint {
         try {
             kvbStation = StationDataLoader.loadData(kvbAppRequest.getStationId());
         } catch (KvbAppException e) {
+            logger.error("loading kvb station data failed",e);
             lametricApp.addFrame(errorFrame(e.getMessage()));
             return lametricApp;
         }

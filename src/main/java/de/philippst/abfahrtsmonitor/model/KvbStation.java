@@ -8,6 +8,12 @@ public class KvbStation {
     private List<String> disruptionMessage;
     private List<KvbStationDeparture> departures;
 
+    public KvbStation(String title, List<String> disruptionMessage, List<KvbStationDeparture> departures) {
+        this.title = title;
+        this.disruptionMessage = disruptionMessage;
+        this.departures = departures;
+    }
+
     public String getTitle() {
         return title;
     }
