@@ -19,7 +19,7 @@ public class KvbStationDeparture {
         if(myMinutes.equals("Sofort")){
             this.minutes = 0;
         } else {
-            this.minutes = Integer.valueOf(myMinutes);
+            this.minutes = Integer.valueOf(myMinutes.trim());
         }
     }
 

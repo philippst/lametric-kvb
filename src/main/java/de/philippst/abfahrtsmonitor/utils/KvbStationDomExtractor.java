@@ -1,7 +1,7 @@
 package de.philippst.abfahrtsmonitor.utils;
 
-import de.philippst.abfahrtsmonitor.model.KvbStationDeparture;
 import de.philippst.abfahrtsmonitor.exception.KvbAppException;
+import de.philippst.abfahrtsmonitor.model.KvbStationDeparture;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -9,27 +9,27 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StationDomExtractor {
+public class KvbStationDomExtractor {
 
     /**
      * Suche Namen der Haltestelle in DOM
      */
     public static String getStationTitle(Document dom) throws KvbAppException {
-        Element kvbTitel = dom.select("div.qr_top_head_rot_small").last();
-        if(kvbTitel.textNodes().size()==0) throw new KvbAppException("KVB station id invalid");
-        String stationTitle = kvbTitel.textNodes().get(0).text().trim();
-        return stationTitle;
+        String text = dom.select("body > div:nth-child(6) > div > h1 > span.red-text").text();
+        if(text.trim().isEmpty()) throw new KvbAppException("KVB station id invalid");
+        return text;
     }
 
     /**
      * Suche Text zu Betriebsstörungen in DOM
      */
     public static List<String> getDisruptionMessage(Document dom){
-        Elements disruptionRows = dom.select("table.qr_table").first().select("tbody tr");
+        Elements disruptionRows = dom.select("body > div:nth-child(6) > div > table").first().select("table > tbody" +
+                " > tr");
 
         List<String> disruptionStrings = new ArrayList<>();
         for(Element disurptionRow : disruptionRows){
-            String disruptionString = disurptionRow.select("td").first().text().replace("\u00a0", "");
+            String disruptionString = disurptionRow.text().replace("\u00a0", "").trim();
             if(disruptionString.equals("Derzeit liegen an dieser Haltestelle keine Störungen vor.")) continue;
             disruptionStrings.add(disruptionString);
         }
@@ -40,7 +40,7 @@ public class StationDomExtractor {
      * Suche Abfahrtsdaten zu Haltestelle in DOM
      */
     public static List<KvbStationDeparture> getDepartures(Document dom){
-        Elements elements = dom.select("table.qr_table").last().select("tbody tr");
+        Elements elements = dom.select("#qr_ergebnis > tbody > tr");
         List<KvbStationDeparture> departures = new ArrayList<>();
         for(Element row : elements){
             String lineNumber = row.select("td").get(0).text().trim();
@@ -50,4 +50,5 @@ public class StationDomExtractor {
         }
         return departures;
     }
+
 }

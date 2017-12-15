@@ -32,8 +32,8 @@ wechselt LaMetric diese regelmäßig. Auf die Scroll- und Wechselgeschwindigkeit
 Einfluss genommen werden.
 
 * **disruption**: Zeigt Betriebsstörungen ("Fahrplanunregelmäßigkeiten") zu Haltestelle als Lauftext an. 
-  Sollten mehrere Störungen vorliegen, wird je Störung ein eigener Lauftext dargestellt. Falls aktuell mal 
-  Störung vorliegt, wird diese Ansicht ignoriert.
+  Sollten mehrere Störungen vorliegen, wird je Störung ein eigener Lauftext dargestellt. Falls mal keine 
+  Störung vorliegt, wird die Ansicht ignoriert.
 * **singleDeparture**: Zeigt die Abfahrtszeit der nächsten Bahn in Minuten. Es empfiehlt sich über das Parameter 
   *filteredDestinations* irrelevante Bahnen (z.B. Gegenrichtung oder andere Linie) herauszufiltern. Mit dem Parameter 
   *minTime* können zusätzlich Bahnen gefiltert werden, die man aufgrund der Wegzeit nicht mehr erreicht. Diese Ansicht
